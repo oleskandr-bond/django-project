@@ -12,3 +12,5 @@ jobs:
 
       - name: Build Docker Image
         run: docker build -t django-app . 
+      - name: Run tests
+        run: docker compose run web python manage.py
