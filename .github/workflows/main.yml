@@ -20,4 +20,4 @@ jobs:
       - name: Build Docker Image
         run: docker build -t django-app . 
       - name: Run tests
-        run: docker compose run web python manage.py
+        run: docker compose run -e SECRET_KEY=${{ secrets.SECRET_KEY }} -e DB_NAME=${{ secrets.DB_NAME }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_HOST=db -e DB_PORT=5432 web python manage.py test
