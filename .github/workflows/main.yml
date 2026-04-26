@@ -7,17 +7,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USER: ${{ secrets.DB_USER}}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD}}
-      SECRET_KEY: ${{ secrets.SECRET_KEY}}
-      DB_HOST: localhost
-      DB_PORT: 5432
+    
     steps:
       - uses: actions/checkout@v4
 
       - name: Build Docker Image
         run: docker build -t django-app . 
-      - name: Run tests
-        run: docker compose run -e SECRET_KEY=${{ secrets.SECRET_KEY }} -e DB_NAME=${{ secrets.DB_NAME }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_HOST=db -e DB_PORT=5432 web python manage.py test
+      - name: Run tests 
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER}}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD}}
+          SECRET_KEY: ${{ secrets.SECRET_KEY}}
+          DB_HOST: localhost
+          DB_PORT: 5432
+        run: |
+          pip install -r requirements.txt
+          python manage.py test
